@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Animavita</string>
+    <string name="create">Create</string>
+    <string-array name="animal_types_array">
+        <item>Mamífero</item>
+        <item>Inseto</item>
+        <item>Ave</item>
+        <item>Réptil</item>
+    </string-array>
+
 </resources>
