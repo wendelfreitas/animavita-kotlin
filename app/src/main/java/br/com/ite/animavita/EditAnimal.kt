@@ -1,14 +1,18 @@
 package br.com.ite.animavita
 
+import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_create_animal.animalImage
+import kotlinx.android.synthetic.main.activity_create_animal.*
 import kotlinx.android.synthetic.main.activity_edit_animal.*
+import kotlinx.android.synthetic.main.pet_item.*
 
 
 class EditAnimal : AppCompatActivity() {
@@ -41,8 +45,6 @@ class EditAnimal : AppCompatActivity() {
 
         }
 
-
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -58,11 +60,18 @@ class EditAnimal : AppCompatActivity() {
                 finish()
                 true
             }
-
+            R.id.finish -> {
+                editAnimal()
+                finish()
+                true
+            }
             R.id.share_data -> {
+                val animal_name = animal_name.text.toString()
+                val animal_type_edit = animal_type_edit.selectedItem.toString();
+
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "type/palin"
-                val body = "Nome do Animal: ${intent.getStringExtra("name")}, Tipo: ${intent.getStringExtra("type")}"
+                val body = "Nome do Animal: ${animal_name}, Tipo: ${animal_type_edit}"
                 val sub = "Quer ser zika na sua vida real? Salve um animal!"
 
                 intent.putExtra(Intent.EXTRA_SUBJECT, body)
@@ -73,5 +82,22 @@ class EditAnimal : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun editAnimal() {
+        println("editAnimal")
+        val animalImage = R.drawable.ic_add_black_24dp
+        val animal_name = animal_name.text.toString()
+        val animal_type_edit = animal_type_edit.selectedItem.toString();
+        
+        setResult(
+            Activity.RESULT_OK,
+            Intent().apply {
+                putExtra("animal_name", animal_name)
+                putExtra("animal_type_edit", animal_type_edit)
+            }
+        )
+
+        finish()
     }
 }

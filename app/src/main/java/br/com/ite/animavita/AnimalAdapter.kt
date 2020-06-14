@@ -1,5 +1,6 @@
 package br.com.ite.animavita
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -7,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.pet_item.view.*
 
@@ -40,13 +40,15 @@ class AnimalAdapter(val context: Context, private val animalList: ArrayList<Anim
             createAnimalIntent.putExtra("photo", currentItem.photo)
             createAnimalIntent.putExtra("name", currentItem.name)
             createAnimalIntent.putExtra("type", currentItem.type)
-            context.startActivity(createAnimalIntent)
+            //context.startActivity(createAnimalIntent)
+            (context as Activity).startActivityForResult(createAnimalIntent, 2)
         }
 
     }
 
     fun addAnimal(animal: Animal) {
         animalList.add(animal)
+        println("addAnimal")
         notifyItemInserted(0);
     }
 }

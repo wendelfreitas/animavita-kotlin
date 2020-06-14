@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/animalImage"
+            android:id="@+id/animalImageCreate"
             android:layout_width="115dp"
             android:contentDescription="Foto do Animal"
             android:adjustViewBounds="true"
