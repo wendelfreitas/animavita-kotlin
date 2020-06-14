@@ -103,20 +103,5 @@ class CreateAnimal : AppCompatActivity() {
         finish()
     }
 
-    private fun generateDummyList(size: Int): ArrayList<Animal> {
-        val list = ArrayList<Animal>()
 
-        for(i in 0 until size) {
-            val drawable = when (i%3) {
-                0 -> R.drawable.ic_add_black_24dp
-                1 -> R.drawable.ic_delete_black_24dp
-                else -> R.drawable.ic_launcher_background
-            }
-
-            val item = Animal("Item $i", drawable, "Type 2")
-            list += item
-        }
-
-        return list
-    }
 }

@@ -2,37 +2,44 @@ package br.com.ite.animavita
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
-    companion object{
+    companion object {
         private const val REQUEST_CODE_ADD_ANIMAL = 1
         private const val REQUEST_CODE_EDIT_ANIMAL = 2
     }
 
-    private val animalList: ArrayList<Animal> = generateDummyList(3);
-    private val adapter:AnimalAdapter = AnimalAdapter(this, animalList)
+    private val animalList: ArrayList<Animal> = ArrayList();
+    private val adapter: AnimalAdapter = AnimalAdapter(this, animalList)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            REQUEST_CODE_ADD_ANIMAL -> when(resultCode) {
-                Activity.RESULT_CANCELED -> { }
+            REQUEST_CODE_ADD_ANIMAL -> when (resultCode) {
+                Activity.RESULT_CANCELED -> {
+                }
                 Activity.RESULT_OK -> {
                     val information_description = data?.getStringExtra("information_description")!!
                     val animal_types = data?.getStringExtra("animal_types")!!
 
-                    val animal = Animal(information_description, R.drawable.ic_launcher_background, animal_types)
-                    animalList.add(0,animal)
+                    val animal = Animal(
+                        information_description,
+                        R.drawable.ic_launcher_background,
+                        animal_types
+                    )
+                    animalList.add(0, animal)
                     adapter.notifyDataSetChanged()
                 }
             }
-            REQUEST_CODE_EDIT_ANIMAL -> when(resultCode) {
+            REQUEST_CODE_EDIT_ANIMAL -> when (resultCode) {
                 Activity.RESULT_CANCELED -> {
                     println("RESULT_CANCELED")
                 }
@@ -41,9 +48,12 @@ class MainActivity : AppCompatActivity() {
                     val animal_type_edit = data?.getStringExtra("animal_type_edit")!!
                     val index = data?.getIntExtra("index", 0)
 
-                    val animal = Animal(animal_name, R.drawable.ic_launcher_background, animal_type_edit)
-                    animalList.set(index, animal);
-                    adapter.notifyItemChanged(index);
+                    val animal =
+                        Animal(animal_name, R.drawable.ic_launcher_background, animal_type_edit)
+                    animalList.removeAt(index);
+                    adapter.notifyItemRemoved(0);
+                    animalList.add(0, animal)
+                    adapter.notifyItemInserted(0);
                 }
             }
             else -> {
@@ -71,12 +81,29 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.create -> {
             // User chose the "Settings" item, show the app settings UI...
             val createAnimalIntent = Intent(this, CreateAnimal::class.java)
             startActivityForResult(createAnimalIntent, 1)
             //startActivity(createAnimalIntent)
+            true
+        }
+
+        R.id.delete -> {
+            if (adapter.getExcludeMode()) {
+                println(adapter.getAnimalsToExclude())
+
+                adapter.getAnimalsToExclude().forEach { animal ->
+                    animalList.removeIf { anim -> anim.id == animal.id }
+                }
+                
+                adapter.setExcludeMode(false)
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.setExcludeMode(true)
+            }
             true
         }
         else -> {
@@ -86,26 +113,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun generateDummyList(size: Int): ArrayList<Animal> {
-        val list = ArrayList<Animal>()
-
-        for(i in 0 until size) {
-            val drawable = when (i%3) {
-                0 -> R.drawable.ic_add_black_24dp
-                1 -> R.drawable.ic_delete_black_24dp
-                else -> R.drawable.ic_launcher_background
-            }
-
-            val item = Animal("Item $i", drawable, "Type 2")
-            list += item
-        }
-
-        return list
-    }
-
-//    fun createAnimal(animal: Animal) {
-//        adapter.addAnimal(animal)
-//        animalList.add(animal)
-//    }
 
 }

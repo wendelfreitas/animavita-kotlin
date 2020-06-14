@@ -6,6 +6,7 @@
     >
 
     <RelativeLayout
+        android:id="@+id/animal_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="9dp">
