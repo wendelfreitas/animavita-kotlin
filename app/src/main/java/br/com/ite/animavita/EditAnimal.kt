@@ -23,6 +23,7 @@ class EditAnimal : AppCompatActivity() {
         supportActionBar?.title = "Editar Animal"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val index = intent.getIntExtra("index", 0)
         val name = intent.getStringExtra("name")
         val photo = intent.getIntExtra("photo", 0)
         val type = intent.getStringExtra("type")
@@ -87,12 +88,14 @@ class EditAnimal : AppCompatActivity() {
     private fun editAnimal() {
         println("editAnimal")
         val animalImage = R.drawable.ic_add_black_24dp
+        val index = intent.getIntExtra("index", 0)
         val animal_name = animal_name.text.toString()
         val animal_type_edit = animal_type_edit.selectedItem.toString();
         
         setResult(
             Activity.RESULT_OK,
             Intent().apply {
+                putExtra("index", index)
                 putExtra("animal_name", animal_name)
                 putExtra("animal_type_edit", animal_type_edit)
             }

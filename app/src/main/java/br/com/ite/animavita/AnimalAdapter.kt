@@ -40,15 +40,7 @@ class AnimalAdapter(val context: Context, private val animalList: ArrayList<Anim
             createAnimalIntent.putExtra("photo", currentItem.photo)
             createAnimalIntent.putExtra("name", currentItem.name)
             createAnimalIntent.putExtra("type", currentItem.type)
-            //context.startActivity(createAnimalIntent)
             (context as Activity).startActivityForResult(createAnimalIntent, 2)
         }
-
-    }
-
-    fun addAnimal(animal: Animal) {
-        animalList.add(animal)
-        println("addAnimal")
-        notifyItemInserted(0);
     }
 }

@@ -20,18 +20,10 @@ class MainActivity : AppCompatActivity() {
     private val adapter:AnimalAdapter = AnimalAdapter(this, animalList)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        println("não cai nessa porra nem fodendo")
-        println("requestCode")
-        println(requestCode)
-        println("resultCode")
-        println(resultCode)
         when (requestCode) {
             REQUEST_CODE_ADD_ANIMAL -> when(resultCode) {
-                Activity.RESULT_CANCELED -> {
-                    println("RESULT_CANCELED")
-                }
+                Activity.RESULT_CANCELED -> { }
                 Activity.RESULT_OK -> {
-                    println("RESULT_OK")
                     val information_description = data?.getStringExtra("information_description")!!
                     val animal_types = data?.getStringExtra("animal_types")!!
 
@@ -45,17 +37,16 @@ class MainActivity : AppCompatActivity() {
                     println("RESULT_CANCELED")
                 }
                 Activity.RESULT_OK -> {
-                    println("RESULT_OK")
                     val animal_name = data?.getStringExtra("animal_name")!!
                     val animal_type_edit = data?.getStringExtra("animal_type_edit")!!
+                    val index = data?.getIntExtra("index", 0)
 
                     val animal = Animal(animal_name, R.drawable.ic_launcher_background, animal_type_edit)
-                    animalList.add(0,animal)
-                    adapter.notifyDataSetChanged()
+                    animalList.set(index, animal);
+                    adapter.notifyItemChanged(index);
                 }
             }
             else -> {
-                println("ta no else está merda")
                 super.onActivityResult(requestCode, resultCode, data)
             }
         }
