@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
                     val animal =
                         Animal(animal_name, animalImage, animal_type_edit)
                     animalList.removeAt(index);
-                    adapter.notifyItemRemoved(0);
+                    adapter.notifyItemRemoved(index);
                     animalList.add(0, animal)
                     adapter.notifyItemInserted(0);
                 }
