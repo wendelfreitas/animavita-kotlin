@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_animal.view.*
 import kotlinx.android.synthetic.main.activity_edit_animal.view.*
-import kotlinx.android.synthetic.main.animal_item.view.*
 import kotlinx.android.synthetic.main.pet_item.view.*
 import kotlinx.android.synthetic.main.pet_item.view.animal_container
 import kotlinx.android.synthetic.main.pet_item.view.name

@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
@@ -97,16 +98,22 @@ class CreateAnimal : AppCompatActivity() {
         val information_description = information_description.text.toString()
         val animal_types = animal_types.selectedItem.toString();
 
-        setResult(
-            Activity.RESULT_OK,
-            Intent().apply {
-                putExtra("animal_image", animalImage)
-                putExtra("information_description", information_description)
-                putExtra("animal_types", animal_types)
-            }
-        )
+        if(information_description.isBlank() || animalImage.isBlank()) {
+            Toast.makeText(this,"O nome do animal deve ser preenchido e uma imagem deve ser escolhida!",Toast.LENGTH_SHORT).show()
+        }else {
+            setResult(
+                Activity.RESULT_OK,
+                Intent().apply {
+                    putExtra("animal_image", animalImage)
+                    putExtra("information_description", information_description)
+                    putExtra("animal_types", animal_types)
+                }
+            )
 
-        finish()
+            finish()
+        }
+
+
     }
 
 

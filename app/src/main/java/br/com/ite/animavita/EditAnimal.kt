@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_edit_animal.*
@@ -83,7 +84,6 @@ class EditAnimal : AppCompatActivity() {
             }
             R.id.finish -> {
                 editAnimal()
-                finish()
                 true
             }
             R.id.share_data -> {
@@ -93,9 +93,7 @@ class EditAnimal : AppCompatActivity() {
 
                 val body = "Nome do Animal: ${animal_name}, Tipo: ${animal_type_edit}"
                 val sub = "Quer ser zika na sua vida real? Salve um animal!"
-                val imgSend = Uri.parse(uriAnimal)
                 intent.action = Intent.ACTION_SEND
-                intent.putExtra(Intent.EXTRA_STREAM, imgSend)
                 intent.putExtra(Intent.EXTRA_SUBJECT, body)
                 intent.putExtra(Intent.EXTRA_TEXT, sub)
                 intent.type = "*/*"
@@ -113,17 +111,24 @@ class EditAnimal : AppCompatActivity() {
         val index = intent.getIntExtra("index", 0)
         val animal_name = animal_name.text.toString()
         val animal_type_edit = animal_type_edit.selectedItem.toString();
-        
-        setResult(
-            Activity.RESULT_OK,
-            Intent().apply {
-                putExtra("index", index)
-                putExtra("animal_name", animal_name)
-                putExtra("animal_type_edit", animal_type_edit)
-                putExtra("animalImage",animalImage)
-            }
-        )
 
-        finish()
+        if(animal_name.isBlank() || animalImage.isBlank()) {
+            Toast.makeText(this,"O nome do animal deve ser preenchido e uma imagem deve ser escolhida!",
+                Toast.LENGTH_SHORT).show()
+        }else {
+            setResult(
+                Activity.RESULT_OK,
+                Intent().apply {
+                    putExtra("index", index)
+                    putExtra("animal_name", animal_name)
+                    putExtra("animal_type_edit", animal_type_edit)
+                    putExtra("animalImage",animalImage)
+                }
+            )
+            finish()
+
+        }
+
+
     }
 }
