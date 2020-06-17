@@ -10,12 +10,12 @@ import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_ADD_ANIMAL = 1
         private const val REQUEST_CODE_EDIT_ANIMAL = 2
+        private val uriAnimal = ""
     }
 
     private val animalList: ArrayList<Animal> = ArrayList();
@@ -27,12 +27,13 @@ class MainActivity : AppCompatActivity() {
                 Activity.RESULT_CANCELED -> {
                 }
                 Activity.RESULT_OK -> {
+                    val animal_image = data?.getStringExtra("animal_image")!!
                     val information_description = data?.getStringExtra("information_description")!!
                     val animal_types = data?.getStringExtra("animal_types")!!
 
                     val animal = Animal(
                         information_description,
-                        R.drawable.ic_launcher_background,
+                        animal_image,
                         animal_types
                     )
                     animalList.add(0, animal)
@@ -46,10 +47,11 @@ class MainActivity : AppCompatActivity() {
                 Activity.RESULT_OK -> {
                     val animal_name = data?.getStringExtra("animal_name")!!
                     val animal_type_edit = data?.getStringExtra("animal_type_edit")!!
+                    val animalImage = data?.getStringExtra("animalImage")!!
                     val index = data?.getIntExtra("index", 0)
 
                     val animal =
-                        Animal(animal_name, R.drawable.ic_launcher_background, animal_type_edit)
+                        Animal(animal_name, animalImage, animal_type_edit)
                     animalList.removeAt(index);
                     adapter.notifyItemRemoved(0);
                     animalList.add(0, animal)

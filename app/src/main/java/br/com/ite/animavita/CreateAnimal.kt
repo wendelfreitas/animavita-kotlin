@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,14 +12,17 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_create_animal.*
 import kotlinx.android.synthetic.main.pet_item.*
 import kotlin.random.Random
 
 
 class CreateAnimal : AppCompatActivity() {
+    private var uriAnimal = ""
+
     companion object {
-        private val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
+        val REQUEST_SELECT_IMAGE_IN_ALBUM = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +48,7 @@ class CreateAnimal : AppCompatActivity() {
         animalImageCreate.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
+            intent.action = Intent.ACTION_PICK
             startActivityForResult(Intent.createChooser(intent, "Selecione uma imagem"), REQUEST_SELECT_IMAGE_IN_ALBUM)
         }
     }
@@ -83,18 +87,20 @@ class CreateAnimal : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         println("onActivityResult 2")
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_SELECT_IMAGE_IN_ALBUM){
-            animalImageCreate.setImageURI(data?.data) // handle chosen image
+            uriAnimal = data?.data.toString()
+            Picasso.with(this).load(data?.data).into(this.animalImageCreate)
         }
     }
 
     private fun createAnimal() {
-        val animalImage = R.drawable.ic_add_black_24dp
+        val animalImage = uriAnimal
         val information_description = information_description.text.toString()
         val animal_types = animal_types.selectedItem.toString();
 
         setResult(
             Activity.RESULT_OK,
             Intent().apply {
+                putExtra("animal_image", animalImage)
                 putExtra("information_description", information_description)
                 putExtra("animal_types", animal_types)
             }

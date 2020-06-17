@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,14 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_create_animal.view.*
+import kotlinx.android.synthetic.main.activity_edit_animal.view.*
+import kotlinx.android.synthetic.main.animal_item.view.*
 import kotlinx.android.synthetic.main.pet_item.view.*
+import kotlinx.android.synthetic.main.pet_item.view.animal_container
+import kotlinx.android.synthetic.main.pet_item.view.name
+import kotlinx.android.synthetic.main.pet_item.view.type
 
 class AnimalAdapter(val context: Context, private val animalList: ArrayList<Animal>) : RecyclerView.Adapter<AnimalAdapter.AnimalViewHolder>() {
     var exclude = false;
@@ -36,9 +44,11 @@ class AnimalAdapter(val context: Context, private val animalList: ArrayList<Anim
 
     override fun onBindViewHolder(holder: AnimalViewHolder, position: Int) {
         val currentItem = animalList[position]
-        holder.photo.setImageResource(currentItem.photo)
+        val uriParse = Uri.parse(currentItem.photo)
+        val img = holder.itemView.animal_image
         holder.name.text = currentItem.name
         holder.type.text = currentItem.type
+        Picasso.with(holder.itemView.context).load(uriParse).into(img)
         holder.container.setBackgroundColor(Color.parseColor("#ffffff"))
 
         holder.itemView.setOnClickListener {
@@ -55,7 +65,6 @@ class AnimalAdapter(val context: Context, private val animalList: ArrayList<Anim
                 holder.container.setBackgroundColor(Color.parseColor(colorVal))
 
             } else {
-
                 val createAnimalIntent = Intent(context, EditAnimal::class.java)
                 createAnimalIntent.putExtra("index", position)
                 createAnimalIntent.putExtra("photo", currentItem.photo)
